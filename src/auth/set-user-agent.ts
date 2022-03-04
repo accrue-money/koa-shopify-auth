@@ -1,8 +1,8 @@
-import Shopify from '@shopify/shopify-api';
+import ShopifyNode from '@shopify/shopify-api';
 
 export const KOA_USER_AGENT_PREFIX = 'Koa Shopify Auth';
 
-export default function setUserAgent() {
+export default function setUserAgent(Shopify: typeof ShopifyNode) {
   if (!Shopify.Context.USER_AGENT_PREFIX) {
     Shopify.Context.USER_AGENT_PREFIX = KOA_USER_AGENT_PREFIX;
   } else if (

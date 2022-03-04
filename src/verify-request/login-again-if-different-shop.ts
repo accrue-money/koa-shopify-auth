@@ -1,6 +1,6 @@
 import {Context} from 'koa';
 
-import Shopify from '@shopify/shopify-api';
+import ShopifyNode from '@shopify/shopify-api';
 import {Session} from '@shopify/shopify-api/dist/auth/session';
 
 import {AccessMode, NextFunction} from '../types';
@@ -12,6 +12,7 @@ import {DEFAULT_ACCESS_MODE} from '../auth';
 export function loginAgainIfDifferentShop(
   routes: Routes,
   accessMode: AccessMode = DEFAULT_ACCESS_MODE,
+  Shopify: typeof ShopifyNode,
 ) {
   return async function loginAgainIfDifferentShopMiddleware(
     ctx: Context,
@@ -26,7 +27,7 @@ export function loginAgainIfDifferentShop(
     );
 
     if (session && query.shop && session.shop !== query.shop) {
-      await clearSession(ctx, accessMode);
+      await clearSession(ctx, accessMode, Shopify);
       redirectToAuth(routes, ctx);
       return;
     }

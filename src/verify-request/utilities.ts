@@ -1,6 +1,6 @@
 import {Context} from 'koa';
 
-import Shopify from '@shopify/shopify-api';
+import ShopifyNode from '@shopify/shopify-api';
 
 import {Routes} from './types';
 import {AccessMode} from '../types';
@@ -23,6 +23,7 @@ export function redirectToAuth(
 export async function clearSession(
   ctx: Context,
   accessMode: AccessMode = DEFAULT_ACCESS_MODE,
+  Shopify: typeof ShopifyNode,
 ) {
   try {
     await Shopify.Utils.deleteCurrentSession(

@@ -1,6 +1,6 @@
 import {Context} from 'koa';
 
-import Shopify from '@shopify/shopify-api';
+import ShopifyNode from '@shopify/shopify-api';
 import fs from 'fs';
 import path from 'path';
 
@@ -20,9 +20,10 @@ const APP_BRIDGE_SCRIPT = fs.readFileSync(
   path.resolve(`${__dirname}/../app-bridge-2.0.12.js`),
 );
 
-export default function createRequestStorageAccess({
-  prefix,
-}: OAuthStartOptions) {
+export default function createRequestStorageAccess(
+  {prefix}: OAuthStartOptions,
+  Shopify: typeof ShopifyNode,
+) {
   return function requestStorage(ctx: Context) {
     const {query} = ctx;
     const shop = query.shop as string;

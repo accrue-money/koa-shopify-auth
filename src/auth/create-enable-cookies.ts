@@ -2,7 +2,7 @@ import {Context} from 'koa';
 
 import {OAuthStartOptions} from '../types';
 
-import Shopify from '@shopify/shopify-api';
+import ShopifyNode from '@shopify/shopify-api';
 
 import css from './client/polaris-css';
 import itpHelper from './client/itp-helper';
@@ -16,7 +16,10 @@ const FOOTER = `Cookies let the app authenticate you by temporarily storing your
 information. They expire after 30 days.`;
 const ACTION = 'Enable cookies';
 
-export default function createEnableCookies({prefix}: OAuthStartOptions) {
+export default function createEnableCookies(
+  {prefix}: OAuthStartOptions,
+  Shopify: typeof ShopifyNode,
+) {
   return function enableCookies(ctx: Context) {
     const {query} = ctx;
     const shop = query.shop as string;

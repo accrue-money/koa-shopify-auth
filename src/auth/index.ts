@@ -8,7 +8,7 @@ import createTopLevelOAuthRedirect from './create-top-level-oauth-redirect';
 import createRequestStorageAccess from './create-request-storage-access';
 import setUserAgent from './set-user-agent';
 
-import Shopify, {AuthQuery} from '@shopify/shopify-api';
+import ShopifyNode, {AuthQuery} from '@shopify/shopify-api';
 
 const DEFAULT_MYSHOPIFY_DOMAIN = 'myshopify.com';
 export const DEFAULT_ACCESS_MODE: AccessMode = 'online';
@@ -30,7 +30,10 @@ function shouldPerformInlineOAuth({cookies}: Context) {
   return Boolean(cookies.get(TOP_LEVEL_OAUTH_COOKIE_NAME));
 }
 
-export default function createShopifyAuth(options: OAuthStartOptions) {
+export default function createShopifyAuth(
+  options: OAuthStartOptions,
+  Shopify: typeof ShopifyNode,
+) {
   const config = {
     prefix: '',
     myShopifyDomain: DEFAULT_MYSHOPIFY_DOMAIN,
@@ -50,10 +53,10 @@ export default function createShopifyAuth(options: OAuthStartOptions) {
   );
 
   const enableCookiesPath = `${oAuthStartPath}/enable_cookies`;
-  const enableCookies = createEnableCookies(config);
-  const requestStorageAccess = createRequestStorageAccess(config);
+  const enableCookies = createEnableCookies(config, Shopify);
+  const requestStorageAccess = createRequestStorageAccess(config, Shopify);
 
-  setUserAgent();
+  setUserAgent(Shopify);
 
   return async function shopifyAuth(ctx: Context, next: NextFunction) {
     ctx.cookies.secure = true;

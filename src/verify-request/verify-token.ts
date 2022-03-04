@@ -1,4 +1,4 @@
-import Shopify from '@shopify/shopify-api';
+import ShopifyNode from '@shopify/shopify-api';
 import {Session} from '@shopify/shopify-api/dist/auth/session';
 
 import {Context} from 'koa';
@@ -19,6 +19,7 @@ export function verifyToken(
   routes: Routes,
   accessMode: AccessMode = DEFAULT_ACCESS_MODE,
   returnHeader = false,
+  Shopify: typeof ShopifyNode,
 ) {
   return async function verifyTokenMiddleware(
     ctx: Context,
